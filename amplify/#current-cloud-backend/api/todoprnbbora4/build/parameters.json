@@ -1,0 +1,7 @@
+{
+    "AppSyncApiName": "todoprnbbora4",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-todoprnbbora4-dev-160330-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/4be803aa2bbc8b9d8797ad0281217e02c03d86a5"
+}

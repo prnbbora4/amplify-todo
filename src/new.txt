@@ -1,0 +1,92 @@
+/* src/App.js */
+import React, { useEffect, useState } from 'react'
+import Amplify, { API, graphqlOperation } from 'aws-amplify'
+import { withAuthenticator } from '@aws-amplify/ui-react'
+import { createTodo } from './graphql/mutations'
+import { deleteTodo } from './graphql/mutations'
+import { listTodos } from './graphql/queries'
+import './App.css'
+
+import awsExports from "./aws-exports";
+Amplify.configure(awsExports);
+
+const initialState = { name: '', description: '', location: '' }
+
+const App = () => {
+  const [formState, setFormState] = useState(initialState)
+  const [todos, setTodos] = useState([])
+
+  useEffect(() => {
+    fetchTodos()
+  }, [])
+
+  function setInput(key, value) {
+    setFormState({ ...formState, [key]: value })
+  }
+
+  async function fetchTodos() {
+    try {
+      const todoData = await API.graphql(graphqlOperation(listTodos))
+      const todos = todoData.data.listTodos.items
+      setTodos(todos)
+    } catch (err) { console.log('error fetching todos') }
+  }
+
+  async function addTodo() {
+    try {
+      if (!formState.name || !formState.description) return
+      const todo = { ...formState }
+      setTodos([...todos, todo])
+      setFormState(initialState)
+      await API.graphql(graphqlOperation(createTodo, { input: todo }))
+    } catch (err) {
+      console.log('error creating todo:', err)
+    }
+  }
+
+  async function delTodo() {
+    try {
+
+    } catch (error) {
+      console.log('error deleting todo:', error)
+    }
+  }
+
+  return (
+    <div className='container box'>
+      <div className='centertext'>
+        <h2>Amplify Todos</h2>
+        <input className='input is-primary'
+          onChange={event => setInput('name', event.target.value)}
+          value={formState.name}
+          placeholder="Name"
+        />
+        <input className='input is-primary'
+          onChange={event => setInput('description', event.target.value)}
+          value={formState.description}
+          placeholder="Description"
+        />
+        <input className='input is-primary'
+          onChange={event => setInput('location', event.target.value)}
+          value={formState.location}
+          placeholder="Location"
+        />
+        <button onClick={addTodo}>Create Todo</button>
+        {
+          todos.map((todo, index) => (
+            <div className='box todos' key={todo.id ? todo.id : index} >
+              <h1 >{todo.name} </h1>
+              <p >{todo.description}</p>
+              <p >{todo.location}</p>
+              <button onClick={delTodo}>Delete</button>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  )
+}
+
+
+
+export default App
