@@ -3,7 +3,7 @@ import "./Modal.css";
 
 function Modal({ setOpenModal, todoId, delTodo }) {
 
-
+    
     return (
         <div className="modalBackground">
             <div className="modalContainer">
@@ -31,10 +31,7 @@ function Modal({ setOpenModal, todoId, delTodo }) {
                     >
                         Cancel
                     </button>
-                    <button onClick={() => {
-                        delTodo;
-                        setOpenModal(false);
-                    }}>Continue</button>
+                    <button onClick={()=> {setOpenModal(false)}}>Continue</button>
                 </div>
             </div>
         </div>
