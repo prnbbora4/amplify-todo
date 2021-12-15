@@ -5,7 +5,7 @@ import { withAuthenticator } from '@aws-amplify/ui-react'
 import { createTodo } from './graphql/mutations'
 import { deleteTodo } from './graphql/mutations'
 import { updateTodo } from './graphql/mutations'
-import { getTodo, listTodos } from './graphql/queries'
+import { listTodos } from './graphql/queries'
 import './App.css'
 import Modal from './Components/Modal'
 
@@ -137,12 +137,12 @@ const App = () => {
               <h1 >{todo.name} </h1>
               <p >{todo.description}</p>
               <p >{todo.location}</p>
-              <button className='openModalBtn' onClick={() => { setModalOpen(true) }}>Delete</button>
+              <button className='openModalBtn' onClick={() => { setModalOpen(true); setTodoId(todo.id) }}>Delete</button>
               <button className='openModalBtn' onClick={() => { upDateTodo(todo.id); setTodoId(todo.id) }}>Update</button>
             </div>
           ))
         }
-        {modalOpen && <Modal setOpenModal={setModalOpen} todoId={todoId} delTodo={delTodo(todoId)}/>}
+        {modalOpen && <Modal setOpenModal={setModalOpen} todoId={todoId} delTodo={delTodo}/>}
 
       </div>
     </div>
